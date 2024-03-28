@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres_db
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: todo_db
+      POSTGRES_USER: todo_user
+      POSTGRES_PASSWORD: todo_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  node_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: node_app
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+    environment:
+      PGUSER: todo_user
+      PGPASSWORD: todo_password
+      PGDATABASE: todo_db
+      PGHOST: postgres_db
+      PGPORT: 5432
+      PORT: 3000
