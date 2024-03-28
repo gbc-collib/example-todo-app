@@ -20,8 +20,8 @@ dataSource
         console.error("Error during Data Source initialization:", err)
     })
 
-app.use('api/tickets', ticketRoutes);
-
+app.use('/api/tickets', ticketRoutes);
+app.use(express.static(path.join(__dirname, "dist")));
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));

@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { TicketService, Tickets, Ticket, statusType } from "src/core/ticket-service/ticket.service";
+import { AsyncPipe } from "@angular/common";
 @Component({ templateUrl: './jira-board.component.html' })
 export class JiraBoardComponent implements OnInit {
     public loading: boolean = true;

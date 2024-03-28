@@ -1,6 +1,6 @@
 import { Ticket } from '../../entity/ticket.entity';
 import { dataSource } from '../../app-data-source';
-import { Request, Response, Next } from 'express';
+import { Request, Response} from 'express';
 export class TicketController {
     public static async createTicket(req: Request, res: Response) {
         let db = dataSource.getRepository(Ticket);

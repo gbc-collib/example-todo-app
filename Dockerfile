@@ -21,11 +21,12 @@ RUN cd frontend && npm run build
 
 RUN cp -r frontend/dist ./server/dist
 
-RUN cd ./server
 
 # Expose port 3000
 EXPOSE 3000
 
+RUN cd ./server
+
 # Command to run the application
-CMD ["ts-node", "app.ts"]
+CMD ["npm", "start", "--prefix", "server"]
 

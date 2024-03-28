@@ -3,7 +3,7 @@ type statusType = "Open" | "In Progress" | "Resolved";
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm"
 
 @Entity()
-export class Ticket extends BaseEntity{
+export class Ticket extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -25,7 +25,7 @@ export class Ticket extends BaseEntity{
     @Column()
     user: string;
 
-    @Column()
+    @Column("text", { array: true })
     tags: string[];
 
 }
