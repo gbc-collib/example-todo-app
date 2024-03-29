@@ -25,6 +25,17 @@ export interface Ticket {
     tags: string[];
 
 }
+
+//Type for user submitting Ticket, excludes auto generated columns of DB
+export interface CreateTicket {
+    title: string;
+    description: string;
+    status: statusType;
+    dueDate: Date;
+    user: string;
+    tags: string[];
+}
+
 export type Tickets = Ticket[];
 
 @Injectable({
@@ -42,6 +53,14 @@ export class TicketService {
     }
 
     getTicket(id: string): Observable<Ticket> {
-        return this.http.get<Ticket>(`api/ticket/${id}`);
+        return this.http.get<Ticket>(`api/tickets/${id}`);
+    }
+    createTicket(ticket: CreateTicket) {
+        console.log(ticket);
+        return this.http.post('api/tickets/', ticket);
+    }
+
+    updateTicket(ticket: Ticket, id: number) {
+        return this.http.put(`api/tickets/${id}`, ticket);
     }
 }

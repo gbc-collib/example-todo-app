@@ -1,26 +1,37 @@
 <mat-dialog-content>
-    <h2 mat-dialog-title> Create new ticket</h2>
-    <form formGroupName="ticketCreation">
-        <label for="title">Title:</label>
+    <h2 mat-dialog-title class="text-center text-2xl pb-1">Create new ticket</h2>
+    <form class="grid grid-cols-3 gap-4" [formGroup]="ticketCreation">
+        <div class="ms-10 col">
+            <label for="title">Title:</label>
+        </div>
         <input type="text" formControlName="title" />
-        <label for="Descriptioned">Description:</label>
-        <textarea formControlName="description">
-        </textarea>
-        <label for="status">Status:</label>
+        <br />
+        <div class="ms-10 col">
+            <label for="Description">Description:</label>
+        </div>
+        <textarea formControlName="description"> </textarea>
+        <br />
+        <div class="ms-10 col">
+            <label for="status">Status:</label>
+        </div>
         <select formControlName="status">
-            <option value="Open">
-                Todo
-            </option>
-            <option value="In Progress">
-                In Progress
-            </option>
-            <option value="Resolved">
-                Finished
-            </option>
+            <option value="Open">Todo</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Finished</option>
         </select>
-        <label for="tags">Tags:</label>
-        <input type="text" />
-
-        <button (click)="submitForm()">Create</button>
+        <br />
+        <div class="ms-10 col">
+            <label for="dueDate">Due Date:</label>
+        </div>
+        <input formControlName="dueDate" type="date" />
+        <br />
+        <div class="ms-10 col">
+            <label for="tags">Tags:</label>
+        </div>
+        <input formControlName="tags" type="text" />
+        <br />
+        <div class="col-span-3 text-center">
+            <button class="submit-btn" (click)="submitForm()">Create</button>
+        </div>
     </form>
 </mat-dialog-content>
