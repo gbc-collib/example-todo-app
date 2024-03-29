@@ -1,5 +1,7 @@
+<h1> Tickets </h1>
 <div class="flex justify-between">
     <section class="w-1/3 bg-gray-100 p-4">
+        <h2>TODO</h2>
         @for (ticket of ticketArray$ | async; track $index;){
         <div *ngIf="ticket.status === 'Open'" class="bg-gray-200 mb-4 p-2">
             <h3>{{ ticket.title }}</h3>
@@ -8,6 +10,7 @@
         <button (click)="addTicket('Open')">Add new Item</button>
     </section>
     <section class="w-1/3 bg-gray-100 p-4">
+        <h2>In Progress</h2>
         @for (ticket of ticketArray$ | async; track $index;){
         <div *ngIf="ticket.status === 'In Progress'" class="bg-gray-200 mb-4 p-2">
             <h3>{{ ticket.title }}</h3>
@@ -16,6 +19,7 @@
         <button (click)="addTicket('In Progress')">Add new Item</button>
     </section>
     <section class="w-1/3 bg-gray-100 p-4">
+        <h2>Finished</h2>
         @for (ticket of ticketArray$ | async; track $index;){
         <div *ngIf="ticket.status === 'Resolved'" class="bg-gray-200 mb-4 p-2">
             <h3>{{ ticket.title }}</h3>

@@ -45,3 +45,10 @@ npm-debug.log
 
 .bazelrc.user
 .angular/
+
+.nx/installation
+.nx/cache
+.nx/installation
+.nx/cache
+.nx/installation
+.nx/cache

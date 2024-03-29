@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
     styleUrls: ['./create-ticket-modal.component.scss']
 })
 export class CreateTicketModalComponent {
+    public submitted: boolean = false;
+    public loading: boolean = false;;
+
+    public submitForm() {
+    }
 
 }
