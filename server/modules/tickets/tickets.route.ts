@@ -19,4 +19,15 @@ router.route('/')
             res.status(500).json({ error: 'Internal server error' });
         }
     });
+router.route('/:id')
+    .put(async (req: Request, res: Response) => {
+        try {
+            await TicketController.updateTicket(req, res);
+        }
+        catch (error) {
+            res.status(500).json({
+                error: 'Internal Server error'
+            });
+        }
+    });
 export default router;

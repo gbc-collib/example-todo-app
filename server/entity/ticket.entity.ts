@@ -1,6 +1,6 @@
 type statusType = "Open" | "In Progress" | "Resolved";
 
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm"
+import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, BaseEntity } from "typeorm"
 
 @Entity()
 export class Ticket extends BaseEntity {
@@ -19,7 +19,7 @@ export class Ticket extends BaseEntity {
     @Column()
     dueDate: Date;
 
-    @Column()
+    @CreateDateColumn()
     createDate: Date;
 
     @Column()
