@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Inject, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TicketService } from 'src/core/ticket-service/ticket.service';
+import { Ticket, TicketService } from 'src/core/ticket-service/ticket.service';
 
+interface DialogData {
+    ticket: Ticket
+}
 @Component({
     selector: 'app-create-ticket-modal',
     templateUrl: './create-ticket-modal.component.html',
     styleUrls: ['./create-ticket-modal.component.scss']
 })
+
 export class CreateTicketModalComponent implements OnInit {
     public submitted: boolean = false;
     public loading: boolean = true;
@@ -24,14 +28,16 @@ export class CreateTicketModalComponent implements OnInit {
             status: ['Open', Validators.required],
             tags: ['']
         });
-        if (this.data != null && this.data.ticket) {
-            const ticket = this.data.ticket
+        if (this.data != null && this.data.ticket != null) {
+            const ticket = this.data.ticket!;
+            let tags = ticket.tags.join(',');
+            //let dueDate = new Date.parse(ticket.dueDate);
             this.editing = true;
-            this.ticketCreation.get('title').setValue(ticket.title);
-            this.ticketCreation.get('description').setValue(ticket.description);
-            this.ticketCreation.get('dueDate').setValue(ticket.dueDate);
-            this.ticketCreation.get('tags').setValue(ticket.tags);
-            this.ticketCreation.get('status').setValue(ticket.status);
+            this.ticketCreation.controls['title'].setValue(ticket.title);
+            this.ticketCreation.controls['description'].setValue(ticket.description);
+            this.ticketCreation.controls['dueDate'].setValue(ticket.dueDate);
+            this.ticketCreation.controls['tags'].setValue(tags);
+            this.ticketCreation.controls['status'].setValue(ticket.status);
         }
 
         this.loading = false;
@@ -49,7 +55,7 @@ export class CreateTicketModalComponent implements OnInit {
         requestData.tags = tagList;
         this.loading = true;
         let req: any;
-        if (this.editing)
+        if (!this.editing)
             req = this.ticketService.createTicket(requestData)
         else
             req = this.ticketService.updateTicket(requestData, this.data.ticket.id);
@@ -58,9 +64,8 @@ export class CreateTicketModalComponent implements OnInit {
                 'next': () => {
                     this.loading = false;
                     this.dialogRef.close();
-                    //TODO: Close modal on success
                 },
-                'error': (err) => {
+                'error': (err: any) => {
                     this.loading = false;
                     console.log(err);
                 }

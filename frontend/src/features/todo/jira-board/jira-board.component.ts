@@ -31,7 +31,7 @@ export class JiraBoardComponent implements OnInit {
     }
 
     openEditModal(ticket: Ticket) {
-        this.dialog.open()
+        this.dialog.open(CreateTicketModalComponent, { data: { ticket: ticket } })
     }
 
 

@@ -192,6 +192,9 @@ class TicketService {
     console.log(ticket);
     return this.http.post('api/tickets/', ticket);
   }
+  updateTicket(ticket, id) {
+    return this.http.put(`api/tickets/${id}`, ticket);
+  }
   static #_ = this.ɵfac = function TicketService_Factory(t) {
     return new (t || TicketService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__.HttpClient));
   };
@@ -215,21 +218,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   CreateTicketModalComponent: () => (/* binding */ CreateTicketModalComponent)
 /* harmony export */ });
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ 4456);
+/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material/dialog */ 2587);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 7580);
 /* harmony import */ var src_core_ticket_service_ticket_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/core/ticket-service/ticket.service */ 6390);
-/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material/dialog */ 2587);
+
 
 
 
 
 
 class CreateTicketModalComponent {
-  constructor(fb, ticketService, dialogRef) {
+  constructor(fb, ticketService, dialogRef, data) {
     this.fb = fb;
     this.ticketService = ticketService;
     this.dialogRef = dialogRef;
+    this.data = data;
     this.submitted = false;
     this.loading = true;
+    this.editing = false;
   }
   ngOnInit() {
     this.ticketCreation = this.fb.group({
@@ -239,6 +245,17 @@ class CreateTicketModalComponent {
       status: ['Open', _angular_forms__WEBPACK_IMPORTED_MODULE_1__.Validators.required],
       tags: ['']
     });
+    if (this.data != null && this.data.ticket != null) {
+      const ticket = this.data.ticket;
+      let tags = ticket.tags.join(',');
+      //let dueDate = new Date.parse(ticket.dueDate);
+      this.editing = true;
+      this.ticketCreation.controls['title'].setValue(ticket.title);
+      this.ticketCreation.controls['description'].setValue(ticket.description);
+      this.ticketCreation.controls['dueDate'].setValue(ticket.dueDate);
+      this.ticketCreation.controls['tags'].setValue(tags);
+      this.ticketCreation.controls['status'].setValue(ticket.status);
+    }
     this.loading = false;
   }
   submitForm() {
@@ -251,11 +268,12 @@ class CreateTicketModalComponent {
     let tagList = requestData.tags.split(',');
     requestData.tags = tagList;
     this.loading = true;
-    this.ticketService.createTicket(requestData).subscribe({
+    let req;
+    if (!this.editing) req = this.ticketService.createTicket(requestData);else req = this.ticketService.updateTicket(requestData, this.data.ticket.id);
+    req.subscribe({
       'next': () => {
         this.loading = false;
         this.dialogRef.close();
-        //TODO: Close modal on success
       },
       'error': err => {
         this.loading = false;
@@ -264,7 +282,7 @@ class CreateTicketModalComponent {
     });
   }
   static #_ = this.ɵfac = function CreateTicketModalComponent_Factory(t) {
-    return new (t || CreateTicketModalComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_1__.FormBuilder), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_core_ticket_service_ticket_service__WEBPACK_IMPORTED_MODULE_0__.TicketService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_3__.MatDialogRef));
+    return new (t || CreateTicketModalComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_1__.FormBuilder), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_core_ticket_service_ticket_service__WEBPACK_IMPORTED_MODULE_0__.TicketService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_3__.MatDialogRef), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_3__.MAT_DIALOG_DATA));
   };
   static #_2 = this.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({
     type: CreateTicketModalComponent,
@@ -350,23 +368,33 @@ __webpack_require__.r(__webpack_exports__);
 
 function JiraBoardComponent_For_7_div_0_Template(rf, ctx) {
   if (rf & 1) {
+    const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 2)(1, "h3");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "button", 3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function JiraBoardComponent_For_7_div_0_Template_button_click_3_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r1);
+      const ticket_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]().$implicit;
+      const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+      return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r2.openEditModal(ticket_r2));
+    });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](4, "Edit");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
   }
   if (rf & 2) {
-    const ticket_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]().$implicit;
+    const ticket_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]().$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ticket_r1.title);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ticket_r2.title);
   }
 }
 function JiraBoardComponent_For_7_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](0, JiraBoardComponent_For_7_div_0_Template, 3, 1, "div", 4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](0, JiraBoardComponent_For_7_div_0_Template, 5, 1, "div", 4);
   }
   if (rf & 2) {
-    const ticket_r1 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ticket_r1.status === "Open");
+    const ticket_r2 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ticket_r2.status === "Open");
   }
 }
 function JiraBoardComponent_For_15_div_0_Template(rf, ctx) {
@@ -376,9 +404,9 @@ function JiraBoardComponent_For_15_div_0_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
   }
   if (rf & 2) {
-    const ticket_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]().$implicit;
+    const ticket_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]().$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ticket_r2.title);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ticket_r4.title);
   }
 }
 function JiraBoardComponent_For_15_Template(rf, ctx) {
@@ -386,8 +414,8 @@ function JiraBoardComponent_For_15_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](0, JiraBoardComponent_For_15_div_0_Template, 3, 1, "div", 4);
   }
   if (rf & 2) {
-    const ticket_r2 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ticket_r2.status === "In Progress");
+    const ticket_r4 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ticket_r4.status === "In Progress");
   }
 }
 function JiraBoardComponent_For_23_div_0_Template(rf, ctx) {
@@ -397,9 +425,9 @@ function JiraBoardComponent_For_23_div_0_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
   }
   if (rf & 2) {
-    const ticket_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]().$implicit;
+    const ticket_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]().$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ticket_r3.title);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ticket_r5.title);
   }
 }
 function JiraBoardComponent_For_23_Template(rf, ctx) {
@@ -407,8 +435,8 @@ function JiraBoardComponent_For_23_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](0, JiraBoardComponent_For_23_div_0_Template, 3, 1, "div", 4);
   }
   if (rf & 2) {
-    const ticket_r3 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ticket_r3.status === "Resolved");
+    const ticket_r5 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ticket_r5.status === "Resolved");
   }
 }
 class JiraBoardComponent {
@@ -434,6 +462,13 @@ class JiraBoardComponent {
   addTicket(status) {
     console.log("Adding new " + status);
     this.dialog.open(_create_ticket_modal_create_ticket_modal_component__WEBPACK_IMPORTED_MODULE_0__.CreateTicketModalComponent);
+  }
+  openEditModal(ticket) {
+    this.dialog.open(_create_ticket_modal_create_ticket_modal_component__WEBPACK_IMPORTED_MODULE_0__.CreateTicketModalComponent, {
+      data: {
+        ticket: ticket
+      }
+    });
   }
   static #_ = this.ɵfac = function JiraBoardComponent_Factory(t) {
     return new (t || JiraBoardComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_core_ticket_service_ticket_service__WEBPACK_IMPORTED_MODULE_1__.TicketService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_3__.MatDialog));
