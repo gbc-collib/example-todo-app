@@ -63,4 +63,8 @@ export class TicketService {
     updateTicket(ticket: Ticket, id: number) {
         return this.http.put(`api/tickets/${id}`, ticket);
     }
+
+    deleteTicket(id: number) {
+        return this.http.delete(`api/tickets/${id}`);
+    }
 }

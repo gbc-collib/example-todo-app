@@ -34,5 +34,14 @@ export class JiraBoardComponent implements OnInit {
         this.dialog.open(CreateTicketModalComponent, { data: { ticket: ticket } })
     }
 
+    deleteTicket(id: number): void {
+        //TODO: Add confirmation modal
+        this.tickets.deleteTicket(id).subscribe({
+            'next': () => {
+                console.log("Deleted Ticket " + id);
+            }
+        });
+    }
+
 
 }

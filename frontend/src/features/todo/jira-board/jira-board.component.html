@@ -6,6 +6,7 @@
         <div *ngIf="ticket.status === 'Open'" class="bg-gray-200 mb-4 mx-2 p-2">
             <h3>{{ ticket.title }}</h3>
             <button (click)="openEditModal(ticket)">Edit</button>
+            <button (click)="deleteTicket(ticket.id)">Delete</button>
         </div>
         }
         <button (click)="addTicket('Open')">Add new Item</button>
@@ -15,6 +16,8 @@
         @for (ticket of ticketArray$ | async; track $index;){
         <div *ngIf="ticket.status === 'In Progress'" class="bg-gray-200 mb-4 mx-2 p-2">
             <h3>{{ ticket.title }}</h3>
+            <button (click)="openEditModal(ticket)">Edit</button>
+            <button (click)="deleteTicket(ticket.id)">Delete</button>
         </div>
         }
         <button (click)="addTicket('In Progress')">Add new Item</button>
@@ -24,6 +27,8 @@
         @for (ticket of ticketArray$ | async; track $index;){
         <div *ngIf="ticket.status === 'Resolved'" class="bg-gray-200 mb-4 mx-2 p-2">
             <h3>{{ ticket.title }}</h3>
+            <button (click)="openEditModal(ticket)">Edit</button>
+            <button (click)="deleteTicket(ticket.id)">Delete</button>
         </div>
         }
         <button (click)="addTicket('Resolved')">Add new Item</button>
