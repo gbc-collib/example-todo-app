@@ -21,6 +21,7 @@ services:
     depends_on:
       - postgres
     environment:
+      # Example PG Setup
       PGUSER: todo_user
       PGPASSWORD: todo_password
       PGDATABASE: todo_db
